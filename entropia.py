@@ -81,15 +81,26 @@ def conditonal_entropy (x, y, bins):
 # print(conditonal_entropy(ancho1, largo1, 5)) #H(Y|X)
 # print(conditonal_entropy(largo1, ancho1, 5)) #H(X|Y)
 
-def h_x (x, y, bins): #H(X) marginal
-    hist_2d, x_edges, y_edges = np.histogram2d(x, y, bins=bins)
+# def h_x (x, y, bins): #H(X) marginal
+#     hist_2d, x_edges, y_edges = np.histogram2d(x, y, bins=bins)
     
-    entropia = 0
-    for i in range (len(x_edges)-1):
-        if hist_2d[i].sum() != 0:
-            entropia -= (hist_2d[i].sum()/np.sum(hist_2d))*np.log2((hist_2d[i].sum()/np.sum(hist_2d)))
+#     entropia = 0
+#     for i in range (len(x_edges)-1):
+#         if hist_2d[i].sum() != 0:
+#             entropia -= (hist_2d[i].sum()/np.sum(hist_2d))*np.log2((hist_2d[i].sum()/np.sum(hist_2d)))
 
-    return entropia
+#     return entropia
+
+def h_x(X, n_bins=5):
+    x, edges = np.histogram(X, bins=n_bins)
+    ancho = edges[1] - edges[0]
+    p_x = (x/np.sum(x)) 
+    h_x = 0
+    for p in p_x:
+    # - sumatoria p(x) log (p(x))
+        if p != 0:
+            h_x -= p * np.log2(p/ancho) 
+    return h_x
 
 # print(joint_entropy(largo1, ancho1, 5))
 # print(conditonal_entropy(ancho1, largo1, 5) + h_x(ancho1, largo1, 5)) #H(Y|X) + H(X) = H(largo|ancho) + H(ancho)
