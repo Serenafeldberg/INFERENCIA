@@ -20,3 +20,5 @@ plt.title('Histograma de frecuencias')
 plt.show()
 
 print(f'ESPERANZA DE U: {np.mean(u)}')
+
+# DESIGUALDAD DE JENSEN: f(E(x)) <= E(f(x))
