@@ -50,11 +50,14 @@ def cant_x_bin (x, y, bins):
 def joint_entropy (x, y, bins):
     hist_2d, x_edges, y_edges = np.histogram2d(x, y, bins=bins)
     hist_2d = hist_2d/np.sum(hist_2d) #Matriz de probabilidades
+
+    ancho = (x_edges[1] - x_edges[0])*(y_edges[1] - y_edges[0]) #CAMBIE
+    
     joint_entropy = 0
     for i in range(len(x_edges)-1):
         for j in range(len(y_edges)-1):
             if hist_2d[i,j] != 0:
-                joint_entropy = joint_entropy - hist_2d[i,j]*np.log2(hist_2d[i,j])
+                joint_entropy = joint_entropy - hist_2d[i,j]*np.log2(hist_2d[i,j]/ancho)
     return joint_entropy
 
 # histogram(largo1, ancho1, 5)
@@ -62,19 +65,17 @@ def joint_entropy (x, y, bins):
 # print(joint_entropy(largo1, ancho1, 5))
 
 def conditonal_entropy (x, y, bins):
+    #Y|X
     hist_2d, x_edges, y_edges = np.histogram2d(x, y, bins=bins)
     hist_2d = hist_2d/np.sum(hist_2d) #Matriz de probabilidades
 
+    ancho = y_edges[1] - y_edges[0] #CAMBIE
+
     conditonal_entropy = 0
     for i in range (len(x_edges)-1):
-        # p_y_given_x = 0
-        # for j in range (len(y_edges)-1):
-        #     p_y_given_x += hist_2d[i,j]
-
-        # print(p_y_given_x, "for x: ", i)
         for j in range (len(y_edges)-1):
             if hist_2d[i,j] != 0:
-                conditonal_entropy -= hist_2d[i,j]*np.log2(hist_2d[i,j]/hist_2d[i].sum())
+                conditonal_entropy -= hist_2d[i,j]*np.log2((hist_2d[i,j]/hist_2d[i].sum())/ancho)
 
     return conditonal_entropy
 
@@ -83,11 +84,11 @@ def conditonal_entropy (x, y, bins):
 
 # def h_x (x, y, bins): #H(X) marginal
 #     hist_2d, x_edges, y_edges = np.histogram2d(x, y, bins=bins)
-    
+#     ancho = x_edges[1] - x_edges[0]
 #     entropia = 0
 #     for i in range (len(x_edges)-1):
 #         if hist_2d[i].sum() != 0:
-#             entropia -= (hist_2d[i].sum()/np.sum(hist_2d))*np.log2((hist_2d[i].sum()/np.sum(hist_2d)))
+#             entropia -= (hist_2d[i].sum()/np.sum(hist_2d))*np.log2((hist_2d[i].sum()/np.sum(hist_2d))/ancho)
 
 #     return entropia
 
@@ -102,8 +103,8 @@ def h_x(X, n_bins=5):
             h_x -= p * np.log2(p/ancho) 
     return h_x
 
-# print(joint_entropy(largo1, ancho1, 5))
-# print(conditonal_entropy(ancho1, largo1, 5) + h_x(ancho1, largo1, 5)) #H(Y|X) + H(X) = H(largo|ancho) + H(ancho)
+print(joint_entropy(largo1, ancho1, 5))
+print(conditonal_entropy(ancho1, largo1, 5) + h_x(ancho1, 5)) #H(Y|X) + H(X) = H(largo|ancho) + H(ancho)
 
 
 #PARA ANCHO1 Y ANCHO2
@@ -145,9 +146,9 @@ def I (x, y, bins):
 
     return info
 
-print(I(ancho1, largo1, 5)) #I(X,Y)
+# print(I(ancho1, largo1, 5)) #I(X,Y)
 
-print(I(ancho1[:len(ancho2)], ancho2, 5)) #I(X,Y) -> como son independientes deberia dar 0. Como tengo pocas muestras me da una diferencia muy chica pero podria decir que son independientes
+# print(I(ancho1[:len(ancho2)], ancho2, 5)) #I(X,Y) -> como son independientes deberia dar 0. Como tengo pocas muestras me da una diferencia muy chica pero podria decir que son independientes
 
 # I(X,Y) = H(X) - H(X|Y) = H(Y) - H(Y|X)
 # print(h_x(ancho1, largo1, 5) - conditonal_entropy(largo1, ancho1, 5)) #H(X) - H(X|Y)
