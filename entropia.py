@@ -106,6 +106,8 @@ def h_x(X, n_bins=5):
 # print(joint_entropy(largo1, ancho1, 5))
 # print(conditonal_entropy(ancho1, largo1, 5) + h_x(ancho1, 5)) #H(Y|X) + H(X) = H(largo|ancho) + H(ancho)
 
+#-> conditional = -sum, sum (p(x,y) log (p(x|y)))
+
 
 #PARA ANCHO1 Y ANCHO2
 def choose_sample (datos):
@@ -121,7 +123,8 @@ def choose_sample (datos):
 sample1 = choose_sample(ancho1)
 sample2 = choose_sample(ancho2)
 
-# print(joint_entropy(sample1, sample2, 5))
+# print(joint_entropy(sample1, sample2, 5)) = -sum, sum (p(x,y) log(p(x,y)))
+
 # print(h_x(sample2, sample1, 5) + h_x(sample1, sample2, 5)) # -> como son independientes deberia dar igual. Como tengo pocas muestras me da una diferencia muy chica pero podria decir que son independientes
 
 #PARA ANCHO1 Y LARGO1
@@ -146,7 +149,7 @@ def I (x, y, bins):
 
     return info
 
-# print(I(ancho1, largo1, 5)) #I(X,Y)
+# print(I(ancho1, largo1, 5)) #I(X,Y) = sum, sum (p(x,y) log (p(x,y)/p(x)p(y)))
 
 # print(I(ancho1[:len(ancho2)], ancho2, 5)) #I(X,Y) -> como son independientes deberia dar 0. Como tengo pocas muestras me da una diferencia muy chica pero podria decir que son independientes
 
@@ -158,5 +161,7 @@ def I (x, y, bins):
 # print(h_x(ancho1, largo1, 5), conditonal_entropy(ancho1, ancho1, 5)) #H(X)
 # print(I(ancho1, ancho1, 5)) #I(X,Y)
 
+
+# D(p||q) = sum,sum p(x,y) log (p(x,y)/q(x,y))
 
 
